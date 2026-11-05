@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: true,
   partialPrefetching: true,
+  // Callback validation in Proxy needs the original encoded query.
+  skipProxyUrlNormalize: true,
   turbopack: {
     rules: {
       "*.css": {

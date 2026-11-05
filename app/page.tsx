@@ -1,15 +1,5 @@
-import Link from "next/link";
-
-export default function Home() {
-  return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-4 p-8">
-      <h1 className="text-4xl font-medium">synzspace</h1>
-      <Link
-        href="/design-system"
-        className="text-muted-foreground underline underline-offset-4 hover:text-foreground"
-      >
-        View design system
-      </Link>
-    </main>
-  );
+import { Suspense } from "react";
+import { PrivateEntry } from "@/components/auth/private-entry";
+export default function Home({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  return <Suspense fallback={<p className="p-10" role="status">Checking private access…</p>}><PrivateEntry path="/" searchParams={searchParams} /></Suspense>;
 }
