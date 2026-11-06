@@ -4,6 +4,7 @@ import { Pool } from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { and, eq, sql } from "drizzle-orm";
 import * as schema from "../../lib/db/schema/auth";
+import { tasks } from "../../lib/db/schema/tasks";
 import { databaseNow } from "../../lib/db/clock";
 import { mutatePersonalBinding, OperatorRefusal } from "../../lib/auth/operator-data";
 async function main() {
@@ -18,6 +19,9 @@ async function main() {
       const [binding]=await tx.select().from(schema.account).where(and(eq(schema.account.userId,ownerId),eq(schema.account.providerId,"google")));
       assert(owner&&binding);
       const before=await tx.select({id:schema.session.id}).from(schema.session).where(eq(schema.session.userId,ownerId));
+      const taskId = randomUUID();
+      await tx.insert(tasks).values({ id: taskId, ownerId, title: "Recovery ownership proof", progress: 37, dueDate: "2028-02-29", description: { type: "doc", content: [{ type: "paragraph", content: [{ type: "text", text: "Keep this content" }] }] } });
+      const tasksBefore = await tx.select().from(tasks).where(eq(tasks.ownerId, ownerId)).orderBy(tasks.id);
       const current={subject:binding.accountId,email:owner.email,name:owner.name};
       assert.equal(await mutatePersonalBinding(tx,current,false,ownerId,now),ownerId);
       assert.equal((await tx.select().from(schema.session).where(eq(schema.session.userId,ownerId))).length,before.length);
@@ -29,11 +33,12 @@ async function main() {
       assert.equal((await tx.select().from(schema.session).where(eq(schema.session.userId,ownerId))).length,0);
       assert.equal((await tx.select().from(schema.verification)).length,0);
       assert.equal(await mutatePersonalBinding(tx,replacement,true,ownerId,now),ownerId);
+      assert.deepEqual(await tx.select().from(tasks).where(eq(tasks.ownerId, ownerId)).orderBy(tasks.id), tasksBefore);
       assert.equal((await tx.select().from(schema.user)).length,1);
       assert.equal((await tx.select().from(schema.account).where(eq(schema.account.userId,ownerId))).length,1);
       throw rollback;
     }),error=>error===rollback);
-    console.log("Shared setup and recovery data path passed: setup retry preserves sessions, another subject cannot enroll, recovery keeps the same user and binding row, revokes sessions and proofs, and retries without duplication. All recovery test changes rolled back.");
+    console.log("Shared setup and recovery data path passed: setup retry preserves sessions, another subject cannot enroll, recovery keeps the same user and binding row, revokes sessions and proofs, and retries without duplication. Task ownership, content, dates, progress, and revisions remain unchanged through recovery and retry. All recovery test changes rolled back.");
   } finally {await pool.end();}
 }
 main().catch(error=>{console.error("Recovery proof failed:",error instanceof assert.AssertionError?error.message:"Check the development database.");process.exitCode=1;});

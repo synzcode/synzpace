@@ -23,6 +23,7 @@
     "auth:cleanup": "node --env-file=.env.local --import tsx scripts/auth/cleanup.ts",
     "auth:prove-api": "node --env-file=.env.local --import tsx scripts/auth/prove-api.ts",
     "auth:prove-client-gate": "node --env-file=.env.local --import tsx scripts/auth/prove-client-gate.ts",
+    "auth:prove-configuration": "node --env-file=.env.local --import tsx scripts/auth/prove-configuration.ts",
     "auth:prove-cleanup": "node --env-file=.env.local --import tsx scripts/auth/prove-cleanup.ts",
     "auth:prove-pages": "node --env-file=.env.local --import tsx scripts/auth/prove-pages.ts",
     "auth:prove-recovery": "node --env-file=.env.local --import tsx scripts/auth/prove-recovery.ts",

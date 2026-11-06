@@ -8,6 +8,13 @@
       "when": 1793695853076,
       "tag": "0000_dry_supernaut",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793964078529,
+      "tag": "0001_many_the_hunter",
+      "breakpoints": true
     }
   ]
 }

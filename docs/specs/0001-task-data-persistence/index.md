@@ -1,7 +1,7 @@
 # 0001. Task data and persistence
 
 **Date**: 2026-11-03
-**Status**: Proposed
+**Status**: In Progress
 
 ## Summary
 

@@ -1,4 +1,4 @@
-# Verify: private account access · spec 0002 · updated 2026-11-04
+# Verify: private account access · spec 0002 · updated 2026-11-06
 
 _Steps derived from spec 0002 acceptance criteria. `/check verify` runs these; `/test` can lock the durable cases when you choose it._
 
@@ -112,3 +112,21 @@ Each row follows the value sourcing table in the governing spec. The command evi
 | AC-12 | Bounded cleanup, active record retention, fixed operational event fields | Hosted Cron configuration, overlap and renewal races, deployed log inspection |
 | AC-13 | Shared migration, live schema, pure generation and cleanup modules, build | Configuration omission matrix, later task migration integration, hosting compatibility |
 | AC-14 | Pinned packages, rollback, policy, state, session, commit ordering, real Google and page privacy proofs | Real two device and browser race cases, recovery, task persistence proof with real resolver |
+
+## Additional command proof steps, 2026-11-06
+
+These steps passed against the development database during `/develop`. You can rerun them from the project root with the ignored `.env.local` configured and `AUTH_PROOF_DEVELOPMENT=true`. They add evidence without closing the remaining real device, replacement identity, or hosted checks above.
+
+* [x] Run `npm run auth:prove-recovery` with the task migration applied. Setup retry preserves existing sessions, another subject cannot enroll, and recovery keeps the same user and binding row while revoking sessions and proofs. Recovery and its retry leave task ownership, content, due date, progress, timestamps, and revision unchanged. The proof inserts a temporary task and rolls back all recovery changes. Covers AC-1, AC-2, AC-6, AC-7, AC-13, AC-14.
+* [x] Run `npm run auth:prove-configuration` with an existing real Google session. Session resolution succeeds without Google credentials, Cron secret, or migration URL. Maintenance succeeds without auth secret, application URL, personal account ID, Google credentials, or migration URL. A missing Cron secret returns 503; missing or incorrect bearer authorization returns 401. Successful maintenance returns counts and remaining work with `private, no-store`. The proof uses an ephemeral bearer only within direct handler calls and may remove eligible expired records. Covers AC-3, AC-11, AC-12, AC-13, AC-14.
+* [x] Run `npm run auth:prove-cleanup`. Expired sessions, sessions beyond 90 days, expired proofs, and stale counters are removed. Active fixtures survive. A sweep skips a session locked by a renewal transaction, and later sweeps preserve its committed future expiry. Two overlapping sweeps complete safely. Temporary fixtures are removed afterward; eligible expired records may also be removed. Covers AC-4, AC-12, AC-14.
+
+These extend the value sourcing checks for existing owner and binding, authorization, maintenance, and capability configuration. The recovery proof uses a synthetic replacement subject inside a rolled back transaction. Actual replacement through verified Google identity and explicit terminal confirmation remains pending. Direct maintenance calls do not establish hosted Cron delivery or deployed platform behavior.
+
+
+## Reported browser proof, 2026-11-06
+
+* [x] You signed in successfully in Safari and Google Chrome. This confirms access in two independent browser sessions. Covers the browser session portion of AC-2, AC-3, AC-14.
+* [x] You selected Sign out all devices and observed both browsers signed out. This confirms the visible global sign out result across those browser sessions. Covers the browser result portion of AC-6.
+
+This is your reported manual evidence. It does not establish a physical second device, callback races, browser restart persistence, or replacement identity recovery. Those checks remain open.
