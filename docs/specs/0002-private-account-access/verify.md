@@ -8,7 +8,7 @@ Your verified local setup completed and returned the configured personal user ID
 
 The command proofs below passed against the development database or the client controller. The production build and full repository lint passed. Private HTML and React Server Component responses were checked against a real session with a temporary development server on port 3107. They contained no account email, session ID, or session token. These response checks did not visually inspect the pages in a browser.
 
-The feature stays in progress. A second device, browser restart, real replacement Google identity, browser failure and race scenarios, phone layout, and deployed platform checks still need verification. The task editor does not exist yet, so its real draft and ownership checks remain integration work for spec 0001. The maintenance secret request timed out. Configure `CRON_SECRET` privately before checking hosted cleanup.
+The feature stays in progress. Hosted sign in and global sign out passed on your laptop and phone, as reported below. Browser restart, real replacement Google identity, browser failure and race scenarios, detailed phone layout, and deployed platform checks still need verification. The task editor does not exist yet, so its real draft and ownership checks remain integration work for spec 0001. The maintenance secret request timed out. Configure `CRON_SECRET` privately before checking hosted cleanup.
 
 ## Commands
 
@@ -130,3 +130,11 @@ These extend the value sourcing checks for existing owner and binding, authoriza
 * [x] You selected Sign out all devices and observed both browsers signed out. This confirms the visible global sign out result across those browser sessions. Covers the browser result portion of AC-6.
 
 This is your reported manual evidence. It does not establish a physical second device, callback races, browser restart persistence, or replacement identity recovery. Those checks remain open.
+
+
+## Reported hosted device proof, 2026-11-06
+
+* [x] Open `https://synzpace.vercel.app/` on your laptop and phone, sign in with the approved Google account on both, and confirm Account access opens. You reported that the full test worked. Covers the real device sign in portion of AC-2, AC-3, AC-14.
+* [x] Choose Sign out all devices on one device and confirm both devices lose access, refreshing the other device if needed. You reported that the full test worked. Covers the visible device result portion of AC-6.
+
+This closes the physical second device check left open in earlier entries. It does not establish replacement identity recovery, hosted Cron execution, browser restart persistence, or injected failure and race scenarios.

@@ -65,10 +65,10 @@ Spec: [0001](../specs/0001-task-data-persistence/index.md).
 
 - [ ] Build it: `/develop task data and persistence`
   - [ ] Prove private task creation and reading across devices with real ownership and safe creation retries. Covers AC-1, AC-2, AC-3, AC-10, AC-13.
-  - [ ] Add validated rich text, autosave, device refresh, and draft preserving conflict and failure recovery. Covers AC-3, AC-4, AC-7, AC-8, AC-9, AC-14.
-  - [ ] Extend the same data path to tags, comments, and bounded lists. Covers AC-2, AC-5, AC-6, AC-8, AC-9, AC-10, AC-14.
+  - [x] Add validated rich text, autosave, device refresh, and draft preserving conflict and failure recovery. Covers AC-3, AC-4, AC-7, AC-8, AC-9, AC-14.
+  - [x] Extend the same data path to tags, comments, and bounded lists. Covers AC-2, AC-5, AC-6, AC-8, AC-9, AC-10, AC-14.
   - [ ] Add trash recovery and expiry cleanup, then close compatibility and operational checks. Covers AC-9, AC-10, AC-11, AC-12, AC-13, AC-14.
-Code in `lib/db/schema/tasks.ts`, `drizzle/0001_many_the_hunter.sql`, and `scripts/tasks/prove-schema.ts` (task and creation receipt schema applied and confirmed live; bounds, defaults, receipt retention, and account cascade proved with rolled back data. Routes and client logic remain pending. First signed in task proof waits for the account access device proof).
+Code in `app/api/tasks/`, `app/api/tags/`, `app/api/internal/tasks/cleanup/`, `lib/data/tasks/`, `lib/tasks/`, `lib/db/schema/`, `drizzle/`, and `scripts/tasks/` (both application migrations applied and schema confirmed live; task, tag, comment, assignment, trash, restore, and cleanup routes implemented; rich text, Unicode folding, autosave, refresh generations, exact retries, and conflict controllers proved. Committed storage, bounded pagination, revision races, receipt retention, expiry after a lock wait, and cleanup cascades passed. Build and lint passed. Account access device proof is complete; real Google session task API proof passed for create, read, replay, edit, conflict, and access and input boundaries. Final real device task flow, migration failure and rollback checks, hosted Cron authorization and delivery, and full operational verification remain).
 
 - [ ] Verify it: `/check verify task data and persistence`
 
@@ -95,12 +95,12 @@ Sign in privately from your devices so your task information belongs to you. Thi
 Spec: [0002](../specs/0002-private-account-access/index.md).
 
 - [ ] Build it: `/develop private account access`
-  - [ ] Prove the pinned auth integration, local setup, and closed Google sign in on two devices. Covers AC-1, AC-2, AC-3, AC-11, AC-13, AC-14.
+  - [x] Prove the pinned auth integration, local setup, and closed Google sign in on two devices. Covers AC-1, AC-2, AC-3, AC-11, AC-13, AC-14.
   - [x] Add remembered sessions and separate tab reauthentication behind the private content gate. Covers AC-3, AC-4, AC-8, AC-9, AC-14.
   - [x] Complete device and global sign out with concurrent tab handling and locked failure recovery. Covers AC-5, AC-6, AC-8, AC-9, AC-10, AC-11, AC-14.
   - [ ] Prove local account recovery while preserving the user ID and task ownership. Covers AC-1, AC-2, AC-6, AC-7, AC-10, AC-12, AC-14.
   - [ ] Complete bounded maintenance, configuration isolation, and migration and operational checks. Covers AC-11, AC-12, AC-13, AC-14.
-Code in `app/sign-in/`, `app/account/access/`, `app/api/`, `components/auth/`, `lib/auth/`, `lib/db/`, `drizzle/`, and `scripts/auth/` (real Google callback passed; permanent pages, session gate, sign out, recovery, and bounded cleanup implemented; database and controller proofs plus initial HTML and RSC privacy checks passed; recovery preserves task ownership and content through retry, capability configuration isolation passed with a real session and direct maintenance calls, overlapping cleanup and concurrent renewal passed, and HTTP callback plus HTML and RSC privacy checks passed again; you reported successful sign in in Safari and Chrome and global sign out ending access in both browsers; physical second device and live replacement identity checks, hosted Cron configuration, and deployed operational verification remain).
+Code in `app/sign-in/`, `app/account/access/`, `app/api/`, `components/auth/`, `lib/auth/`, `lib/db/`, `drizzle/`, and `scripts/auth/` (real Google callback passed; permanent pages, session gate, sign out, recovery, and bounded cleanup implemented; database and controller proofs plus initial HTML and RSC privacy checks passed; recovery preserves task ownership and content through retry, capability configuration isolation passed with a real session and direct maintenance calls, overlapping cleanup and concurrent renewal passed, and HTTP callback plus HTML and RSC privacy checks passed again; you reported successful sign in in Safari and Chrome and global sign out ending access in both browsers; you also reported successful hosted sign in on laptop and phone and global sign out ending access on both; live replacement identity checks, hosted Cron configuration, and deployed operational verification remain).
 
 - [ ] Verify it: `/check verify private account access`
 

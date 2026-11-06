@@ -15,6 +15,13 @@
       "when": 1793964078529,
       "tag": "0001_many_the_hunter",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793966256572,
+      "tag": "0002_nappy_famine",
+      "breakpoints": true
     }
   ]
 }
