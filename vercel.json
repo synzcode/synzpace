@@ -1,12 +1,15 @@
 {
-  "crons": [
-    {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "schedules": {
+    "auth-cleanup": {
       "path": "/api/internal/auth/cleanup",
-      "schedule": "0 3 * * *"
+      "schedule": "0 3 * * *",
+      "requestMethod": "GET"
     },
-    {
+    "task-cleanup": {
       "path": "/api/internal/tasks/cleanup",
-      "schedule": "0 2 * * *"
+      "schedule": "0 2 * * *",
+      "requestMethod": "GET"
     }
-  ]
+  }
 }
